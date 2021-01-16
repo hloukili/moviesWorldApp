@@ -1,5 +1,7 @@
 package com.moviesworld.app.security.jwt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -12,8 +14,16 @@ import java.io.IOException;
 
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
+
+    //This method will be call anytime unauthenticated user requests a http resource and an
+    //AutehenticationException is thrown.
     @Override
-    public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+            throws IOException, ServletException {
+        logger.error("Unauthorizer error: {}", authException.getMessage());
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,"Error : Unauthorized");
 
     }
 }
